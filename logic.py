@@ -123,11 +123,12 @@ while True:
         dmg += random.randint(1,2)
         if my_hp-dmg<=0:
             exit("You Lose!")
+            
 
         os.system("clear")
 
     enemy_hp +=40
-    my_hp += 30
+    my_hp += 5
     while enemy_hp-points>0:
         print("\t \t \t Stage 1 Level 2")
         pool = []
@@ -154,7 +155,7 @@ while True:
         os.system("clear")
 
     enemy_hp +=50
-    my_hp += 40
+    my_hp += 10
     while enemy_hp-points>0:
         print("\t \t \t Stage 1 Level 3")
         pool = []
