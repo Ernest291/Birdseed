@@ -122,7 +122,10 @@ while True:
         input("press Enter to countinue...")
         dmg += random.randint(1,2)
         if my_hp-dmg<=0:
-            exit("You Lose!")
+            os.system("clear")
+            arts.lose_ascii()
+            input("Say your last words!\n")
+            exit(f"\n \t ~me, 2026")
             
 
         os.system("clear")
@@ -150,7 +153,10 @@ while True:
         input("press Enter to countinue...")
         dmg += random.randint(2,3)
         if my_hp-dmg<=0:
-            exit("You Lose!")
+            os.system("clear")
+            arts.lose_ascii()
+            input("Say your last words!\n")
+            exit(f"\n \t ~me, 2026")
 
         os.system("clear")
 
@@ -177,7 +183,10 @@ while True:
         input("press Enter to countinue...")
         dmg += random.randint(3,4)
         if my_hp-dmg<=0:
-            exit("You Lose!")
+            os.system("clear")
+            arts.lose_ascii()
+            input("Say your last words!\n")
+            exit(f"\n \t ~me, 2026")
 
         os.system("clear")
     
