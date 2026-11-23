@@ -1,5 +1,6 @@
 from assets import words, arts
 from hp_calc import damage 
+from Stages import *
 import random
 import os
 import time
@@ -15,6 +16,8 @@ FUNCTIONS SECTION:
 5. get_result(list_word_letters)
 6. print_result(result)
 7. get_points(result)
+8. get_enemy(stage)
+9. get_boss(stage)
 
 
 NOTES:
@@ -25,16 +28,15 @@ NOTES:
     - expect more functions lol~~
 """
 def get_pool(pool):
-    for _ in range(16):
-        idx = random.choice(range(26))
-        element = list(letters)[idx]
-        pool.append(element)
-
-def print_scrn(enemy_hp, points, my_hp,dmg):
+    alphabet = list(words.LETTERS.keys())
+    odds = [100/pts for pts in words.LETTERS.values()]
+    pool.extend(random.choices(alphabet, odds, k=16))
+def print_scrn(enemy_hp, points, my_hp,dmg, enemy):
     #57x11
     print(f""" 
+                                            ENEMY: {enemy}    
     =========================================================
-    [HP: {my_hp-dmg}]                           \t \t [HP: {enemy_hp-points}] 
+    [HP: {my_hp-dmg}]                         \t \t [HP: {enemy_hp-points}] 
     =========================================================
     [sprite]                                  [sprite]
 
@@ -62,7 +64,7 @@ def print_pool(pool):
     print()
 
 def get_input(list_word_letters):
-    str_word = input('\tMake a word: ') 
+    str_word = input('\tMake a word: ').lower().strip() 
     list_word_letters.extend(str_word)
     return str_word
 
@@ -80,7 +82,7 @@ def get_result(list_word_letters):
 
 def print_result(result):
     if result in word_list:
-        print(result)
+        print(result.upper())
     else:
         print("debug debug")
 
@@ -89,6 +91,35 @@ def get_points(result):
     for l in result:
         points.append(letters.get(l))
     return sum(points)
+
+def get_enemy(stage):
+
+    enemy = scenes[stage]['Enemies']
+
+    name, stats = random.choice(list(enemy.items()))
+
+    hp = stats['HP']
+    dmg = stats['Dmg']
+
+    if callable(dmg):
+        dmg = dmg()
+
+    return name, hp, dmg
+
+def get_boss(stage):
+
+    enemy = scenes[stage]['Bosses']
+
+    name, stats = random.choice(list(enemy.items()))
+
+    hp = stats['HP']
+    dmg = stats['Dmg']
+
+    if callable(dmg):
+        dmg = dmg()
+
+    return name, hp, dmg
+
 """ 
 LOGIC SECTION:
 
@@ -97,100 +128,550 @@ BASTA AH AMO NI HEHEHEH...
 """
 points = 0
 dmg = 0
-enemy_hp = 30
-my_hp = 30
+# enemy_hp = 30
+my_hp = 200
 
-while True:
-    while enemy_hp-points>0:
-        print("\t \t \t Stage 1 Level 1")
-        pool = []
-        letters = words.LETTERS
-        word_list = words.ALL_WORDS
-        list_word_letters = []
+# while True:
+# STAGE 1
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage1')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 1 Level 1")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
 
-        get_pool(pool)
-        print_scrn(enemy_hp, points, my_hp, dmg)
-        print_pool(pool)
-        get_input(list_word_letters)
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
 
-        result = get_result(list_word_letters)
-        print_result(result)
+    result = get_result(list_word_letters)
+    print_result(result)
 
-        if result in word_list:
-            points += damage(get_points(result), len(result))
+    if result in word_list:
+        points += damage(get_points(result), len(result))
 
-        input("press Enter to countinue...")
-        dmg += random.randint(1,2)
-        if my_hp-dmg<=0:
-            os.system("clear")
-            arts.lose_ascii()
-            input("Say your last words!\n")
-            exit(f"\n \t ~me, 2026")
-            
-
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
         os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+        
 
-    enemy_hp +=40
-    my_hp += 5
-    while enemy_hp-points>0:
-        print("\t \t \t Stage 1 Level 2")
-        pool = []
-        letters = words.LETTERS
-        word_list = words.ALL_WORDS
-        list_word_letters = []
+    os.system("clear")
 
-        get_pool(pool)
-        print_scrn(enemy_hp, points, my_hp, dmg)
-        print_pool(pool)
-        get_input(list_word_letters)
+# enemy_hp +=40
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage1')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 1 Level 2")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
 
-        result = get_result(list_word_letters)
-        print_result(result)
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
 
-        if result in word_list:
-            points += damage(get_points(result), len(result))
+    result = get_result(list_word_letters)
+    print_result(result)
 
-        input("press Enter to countinue...")
-        dmg += random.randint(2,3)
-        if my_hp-dmg<=0:
-            os.system("clear")
-            arts.lose_ascii()
-            input("Say your last words!\n")
-            exit(f"\n \t ~me, 2026")
+    if result in word_list:
+        points += damage(get_points(result), len(result))
 
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
         os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
 
-    enemy_hp +=50
-    my_hp += 10
-    while enemy_hp-points>0:
-        print("\t \t \t Stage 1 Level 3")
-        pool = []
-        letters = words.LETTERS
-        word_list = words.ALL_WORDS
-        list_word_letters = []
+    os.system("clear")
 
-        get_pool(pool)
-        print_scrn(enemy_hp, points, my_hp, dmg)
-        print_pool(pool)
-        get_input(list_word_letters)
+# enemy_hp +=50
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage1')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 1 Level 3")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
 
-        result = get_result(list_word_letters)
-        print_result(result)
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
 
-        if result in word_list:
-            points += damage(get_points(result), len(result))
+    result = get_result(list_word_letters)
+    print_result(result)
 
-        input("press Enter to countinue...")
-        dmg += random.randint(3,4)
-        if my_hp-dmg<=0:
-            os.system("clear")
-            arts.lose_ascii()
-            input("Say your last words!\n")
-            exit(f"\n \t ~me, 2026")
+    if result in word_list:
+        points += damage(get_points(result), len(result))
 
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
         os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
     
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_boss('Stage1')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 1 BOSS")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
 
-    break 
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+
+# STAGE 2
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage2')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 2 Level 1")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+        
+
+    os.system("clear")
+
+# enemy_hp +=40
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage2')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 2 Level 2")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+
+# enemy_hp +=50
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage2')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 2 Level 3")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+    
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_boss('Stage2')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 2 BOSS")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+    
+# STAGE 3
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage3')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 3 Level 1")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+        
+
+    os.system("clear")
+
+# enemy_hp +=40
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage3')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 3 Level 2")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+
+# enemy_hp +=50
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage3')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 3 Level 3")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+    
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_boss('Stage3')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 3 BOSS")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+# STAGE 4
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage4')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 4 Level 1")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+        
+
+    os.system("clear")
+
+# enemy_hp +=40
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage4')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 4 Level 2")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+
+# enemy_hp +=50
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_enemy('Stage4')
+while enemy_hp-points>0:
+    print("\t \t \t Stage 4 Level 3")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+    
+points = 0
+my_hp += 50
+enemy, enemy_hp, enemy_dmg = get_boss('Stage4')
+while enemy_hp-points>0:
+    print("\t \t Stage 4: The Final BOSS")
+    pool = []
+    letters = words.LETTERS
+    word_list = words.ALL_WORDS
+    list_word_letters = []
+
+    get_pool(pool)
+    print_scrn(enemy_hp, points, my_hp, dmg, enemy)
+    print_pool(pool)
+    get_input(list_word_letters)
+
+    result = get_result(list_word_letters)
+    print_result(result)
+
+    if result in word_list:
+        points += damage(get_points(result), len(result))
+
+    input("press Enter to countinue...")
+    dmg += enemy_dmg
+    my_hp -= dmg
+    dmg = 0
+    if my_hp-dmg<=0:
+        os.system("clear")
+        arts.lose_ascii()
+        input("Say your last words!\n")
+        exit(f"\n \t ~me, 2026")
+
+    os.system("clear")
+
 
 arts.win_ascii()
