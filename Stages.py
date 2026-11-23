@@ -20,14 +20,14 @@ Final Boss: [Bear, Bald Eagle]
 import random
 
 scenes = { 
-    'Stage_1' : {
+    'Stage1' : {
         'Enemies'      : { 
             'Gnome'    : {
                 'HP'   : 60, 'Dmg'  : 20 },
             'Butterfly': { 
                 'HP'   : 40, 'Dmg'  : 10},
             'Flower'   : {
-                'HP'   : 45, 'Dmg'  : random.randint(12,17)},
+                'HP'   : 45, 'Dmg'  : lambda: random.randint(12,17)},
             'Snail'    : { 
                 'HP'   : 70, 'Dmg'  : 10},
             'Bees'     : {
@@ -39,7 +39,7 @@ scenes = {
             'Cat'      : {
                 'HP'   : 220, 'Dmg'  : 25},
             'Scarecrow': {
-                'HP'   : 150, 'Dmg'  : 20*random.choice([1, 1.25])},
+                'HP'   : 150, 'Dmg'  : lambda: 20*random.choice([1, 1.25])},
             'Gnome'    : {
                 'HP'    : 170, 'Dmg'   : 27},
             'Queen_Bee': {
@@ -111,4 +111,21 @@ scenes = {
     }
 }
 
-print(scenes['Stage_1']['Enemies']['Snail']['HP'])
+def get_enemy(stage):
+
+    enemy = scenes[stage]['Enemies']
+
+    name, stats = random.choice(list(enemy.items()))
+
+    hp = stats['HP']
+    dmg = stats['Dmg']
+
+    if callable(dmg):
+        dmg = dmg()
+
+    return name, hp, dmg
+
+print(get_enemy('Stage1'))
+
+enemy, enemyHp, enemydmg = get_enemy('Stage1')
+print(enemy, enemyHp, enemydmg)
