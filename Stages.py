@@ -111,21 +111,3 @@ scenes = {
     }
 }
 
-def get_enemy(stage):
-
-    enemy = scenes[stage]['Enemies']
-
-    name, stats = random.choice(list(enemy.items()))
-
-    hp = stats['HP']
-    dmg = stats['Dmg']
-
-    if callable(dmg):
-        dmg = dmg()
-
-    return name, hp, dmg
-
-print(get_enemy('Stage1'))
-
-enemy, enemyHp, enemydmg = get_enemy('Stage1')
-print(enemy, enemyHp, enemydmg)
