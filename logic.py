@@ -1,5 +1,4 @@
 from assets import words, arts
-from assets.colors import BG_GRAY
 from hp_calc import damage
 from Stages import *
 import random
@@ -18,8 +17,6 @@ FUNCTIONS SECTION:
 5. get_result(list_word_letters)
 6. print_result(result)
 7. get_points(result)
-8. get_enemy(stage)
-9. get_boss(stage)
 8. get_enemy(stage)
 9. get_boss(stage)
 
@@ -86,7 +83,6 @@ def get_result(list_word_letters):
 
 def print_result(result):
     if result in word_list:
-        print(result.upper())
         print(result.upper())
     else:
         print("debug debug")
