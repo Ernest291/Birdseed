@@ -20,6 +20,8 @@ FUNCTIONS SECTION:
 7. get_points(result)
 8. get_enemy(stage)
 9. get_boss(stage)
+8. get_enemy(stage)
+9. get_boss(stage)
 
 
 NOTES:
@@ -84,6 +86,7 @@ def get_result(list_word_letters):
 
 def print_result(result):
     if result in word_list:
+        print(result.upper())
         print(result.upper())
     else:
         print("debug debug")
@@ -156,7 +159,11 @@ while enemy_hp - points > 0:
 
     result = get_result(list_word_letters)
     print_result(result)
+    result = get_result(list_word_letters)
+    print_result(result)
 
+    if result in word_list:
+        points += damage(get_points(result), len(result))
     if result in word_list:
         points += damage(get_points(result), len(result))
 
@@ -170,6 +177,7 @@ while enemy_hp - points > 0:
         input("Say your last words!\n")
         exit(f"\n \t ~me, 2026")
 
+    os.system("clear")
     os.system("clear")
 
 # enemy_hp +=40
@@ -190,7 +198,11 @@ while enemy_hp - points > 0:
 
     result = get_result(list_word_letters)
     print_result(result)
+    result = get_result(list_word_letters)
+    print_result(result)
 
+    if result in word_list:
+        points += damage(get_points(result), len(result))
     if result in word_list:
         points += damage(get_points(result), len(result))
 
@@ -204,6 +216,7 @@ while enemy_hp - points > 0:
         input("Say your last words!\n")
         exit(f"\n \t ~me, 2026")
 
+    os.system("clear")
     os.system("clear")
 
 # enemy_hp +=50
@@ -661,7 +674,11 @@ while enemy_hp - points > 0:
 
     result = get_result(list_word_letters)
     print_result(result)
+    result = get_result(list_word_letters)
+    print_result(result)
 
+    if result in word_list:
+        points += damage(get_points(result), len(result))
     if result in word_list:
         points += damage(get_points(result), len(result))
 
