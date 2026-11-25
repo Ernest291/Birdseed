@@ -19,110 +19,92 @@ Enemies: [Hornet/Wasp, Mountain Goat, Golem, Eagle henchman]
 Final Boss: [Bear, Bald Eagle]
 """
 import random
-
+from assets import arts
 scenes = { 
     'Stage1' : {
         'Enemies'      : { 
             'Gnome'    : {
-                'HP'   : 60, 'Dmg'  : 20 },
+                'HP'   : 60, 'Dmg'  : 20, 'sprite' : arts.vsGnome},
             'Butterfly': { 
-                'HP'   : 40, 'Dmg'  : 10},
+                'HP'   : 40, 'Dmg'  : 10, 'sprite' : arts.vsButterfly},
             'Flower'   : {
-                'HP'   : 45, 'Dmg'  : random.randint(12,17)},
+                'HP'   : 45, 'Dmg'  : random.randint(12,17), 'sprite' : arts.vsFlower},
             'Snail'    : { 
-                'HP'   : 70, 'Dmg'  : 10},
+                'HP'   : 70, 'Dmg'  : 10, 'sprite' : arts.vsSnail},
             'Bees'     : {
-                'HP'   : 40, 'Dmg'  : 13},
+                'HP'   : 40, 'Dmg'  : 13, 'sprite' : arts.vsBees},
             'Earthworm': {
-                'HP'   : 50,'Dmg'  : 20}
+                'HP'   : 50,'Dmg'  : 20, 'sprite' : arts.vsEarthworm}
         },
         'Bosses'       : {
             'Cat'      : {
-                'HP'   : 220, 'Dmg'  : 25},
+                'HP'   : 220, 'Dmg'  : 25, 'sprite' : arts.vsCat},
             'Scarecrow': {
-                'HP'   : 150, 'Dmg'  : 20*random.choice([1, 1.25])},
-            'Gnome'    : {
-                'HP'    : 170, 'Dmg'   : 27},
+                'HP'   : 150, 'Dmg'  : 20*random.choice([1, 1.25]), 'sprite' : arts.vsScarecrow},
             'Queen_Bee': {
-                'HP'   : 120, 'Dmg'  : 23*random.uniform(0.85, 1.1)}
+                'HP'   : 120, 'Dmg'  : 23*random.uniform(0.85, 1.1), 'sprite': arts.vsQueenbee}
         }
     },
 
     'Stage2' : {
         'Enemies'            : { 
             'Caterpillar'    : {
-                'HP'         : 50, 'Dmg'        : 13 },
+                'HP'         : 50, 'Dmg'        : 13, 'sprite' : arts.vsCatterpillar },
             'Squirrel'       : { 
-                'HP'         : 60, 'Dmg'        : 20},
+                'HP'         : 60, 'Dmg'        : 20, 'sprite' : arts.vsSquirrel},
             'Stick Insect'   : {
-                'HP'         : 40, 'Dmg'        : 15},
+                'HP'         : 40, 'Dmg'        : 15, 'sprite' : arts.vsStickinsect},
             'Mantis'         : { 
-                'HP'         : 70, 'Dmg'        : 17*random.choice([1, 1.25])},
+                'HP'         : 70, 'Dmg'        : 17*random.choice([1, 1.25]), 'sprite' : arts.vsMantis},
             'Firefly'        : {
-                'HP'         : 55, 'Dmg'        : 15}
+                'HP'         : 55, 'Dmg'        : 15, 'sprite' : arts.vsFirefly}
         },
         'Bosses'             : {
             'Treant'         : {
-                'HP'         : 240, 'Dmg'        : 27},
+                'HP'         : 240, 'Dmg'        : 27, 'sprite': arts.vsTreant},
             'Flying Squirrel': {
-                'HP'         : 210, 'Dmg'        : 23},
+                'HP'         : 210, 'Dmg'        : 23, 'sprite': arts.vsFlyingsquirrel},
             'Aspid'          : {
-                'HP'         : 230, 'Dmg'        : random.randint(21,28)}
+                'HP'         : 230, 'Dmg'        : random.randint(21,28), 'sprite' : arts.vsAspid}
         }
     },
     'Stage3' : {
         'Enemies'         : { 
             'Crab'        : {
-                'HP'      : 55,'Dmg'     : 18},
+                'HP'      : 55,'Dmg'     : 18, 'sprite': arts.vsCrab},
             'Flying Fish' : { 
-                'HP'      : 60, 'Dmg'     : 23},
-            'ALbatross'   : {
-                'HP'      : 63, 'Dmg'     : 25},
+                'HP'      : 60, 'Dmg'     : 23, 'sprite': arts.vsFlyingfish},
+            'Albatross'   : {
+                'HP'      : 63, 'Dmg'     : 25, 'sprite': arts.vsAlbatross},
             'Seagull'     : { 
-                'HP'      : 63, 'Dmg'     : 25},
+                'HP'      : 63, 'Dmg'     : 25, 'sprite': arts.vsSeagull},
     },
         'Bosses'          : {
             'Lighthouse'  : {
-                'HP'      : 300, 'Dmg'     : 24},
+                'HP'      : 300, 'Dmg'     : 24, 'sprite': arts.vsLighthouse},
             'Pelican'     : {
-                'HP'      : 264,'Dmg'     : 25},
+                'HP'      : 264,'Dmg'     : 25, 'sprite': arts.vsPelican},
             'Nemo'        : {
-                'HP'      : 240, 'Dmg'     : 30}
+                'HP'      : 240, 'Dmg'     : 30, 'sprite': arts.vsNemo}
         }
     },
     'Stage4' : {
         'Enemies'           : { 
             'Hornet'        : {
-                'HP'        : 40, 'Dmg'       : 18},
+                'HP'        : 40, 'Dmg'       : 18, 'sprite': arts.vsHornets},
             'Monutain Goat' : { 
-                'HP'        : 70, 'Dmg'       : 20},
+                'HP'        : 70, 'Dmg'       : 20, 'sprite': arts.vsMountaingoat},
             'Pebblit'       : {
-                'HP'        : 80, 'Dmg'       : 20},
+                'HP'        : 80, 'Dmg'       : 20, 'sprite': arts.vsPebblit},
             'Raven'           : { 
-                'HP'        : 60, 'Dmg'       : 25},
+                'HP'        : 60, 'Dmg'       : 25, 'sprite': arts.vsRaven},
             'HoneyGuide'    : {
-                'HP'        : 60, 'Dmg'       : 20}
+                'HP'        : 60, 'Dmg'       : 20, 'sprite': arts.vsHoneyguide}
         },
         'Bosses'            : {
             'Pou'           : {
-                'HP'        : 340, 'Dmg'       : 24},
+                'HP'        : 340, 'Dmg'       : 24, 'sprite': arts.vsPou},
             'Maurice'       : {
-                'HP'        : 400, 'Dmg'       : 25},
+                'HP'        : 400, 'Dmg'       : 25, 'sprite': arts.vsMaurice},
         }}}
-#def get_enemy(stage):
-#     enemy = scenes[stage]['Enemies']
-#
-#     name, stats = random.choice(list(enemy.items()))
-#
-#     hp = stats['HP']
-#     dmg = stats['Dmg']
-#
-#     if callable(dmg):
-#         dmg = dmg()
-#
-#     return name, hp, dmg
-#
-# print(get_enemy('Stage1'))
-#
-# enemy, enemyHp, enemydmg = get_enemy('Stage1')
-# print(enemy, enemyHp, enemydmg)
+

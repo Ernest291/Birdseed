@@ -1,1 +1,3 @@
-print("main file")
+from logic import *
+
+main()
